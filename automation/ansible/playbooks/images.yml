@@ -1,0 +1,29 @@
+---
+- name: Build Docker image and create container if necessary
+  hosts: seq
+  become: true
+
+  tasks:
+    - name: Build database image
+      community.docker.docker_image:
+        name: database:latest
+        source: build
+        build:
+          path: /home/ec2-user/database
+      when: inventory_hostname == 'seq-database'
+
+    - name: Build backend image
+      community.docker.docker_image:
+        name: backend:latest
+        source: build
+        build:
+          path: /home/ec2-user/backend
+      when: inventory_hostname == 'seq-backend'
+
+    - name: Build frontend image
+      community.docker.docker_image:
+        name: frontend:latest
+        source: build
+        build:
+          path: /home/ec2-user/frontend
+      when: inventory_hostname == 'seq-frontend'
