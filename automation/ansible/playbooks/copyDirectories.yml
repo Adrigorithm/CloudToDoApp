@@ -1,0 +1,26 @@
+---
+- name: Copy image directories
+  hosts: seq
+  become: true
+
+  tasks:
+    - name: Copy directory to Database host
+      ansible.builtin.copy:
+        src: ../../../database
+        owner: ec2-user
+        dest: /home/ec2-user
+      when: inventory_hostname == 'seq-database'
+
+    - name: Copy directory to Backend host
+      ansible.builtin.copy:
+        src: ../../../backend
+        owner: ec2-user
+        dest: /home/ec2-user
+      when: inventory_hostname == 'seq-backend'
+
+    - name: Copy directory to Frontend host
+      ansible.builtin.copy:
+        src: ../../../frontend
+        owner: ec2-user
+        dest: /home/ec2-user
+      when: inventory_hostname == 'seq-frontend'
